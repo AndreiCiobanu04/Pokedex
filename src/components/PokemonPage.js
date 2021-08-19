@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import { retrieveSpecficPokemon } from '../services/PokemonService';
 import defaultImg from '../images/defaultPokemon.jpg';
 import moment from 'moment'
@@ -7,7 +7,7 @@ import './PokemonPage.css'
 
 const PokemonPage = ({favorites, setFavorites, comments, setComments}) => {
 
-    const history = useHistory();
+
     const [pokemon, setPokemon] = useState([]);
     const location = useLocation();
     const [commentForPokemon, setCommentForPokemon] = useState({});
@@ -59,8 +59,8 @@ const PokemonPage = ({favorites, setFavorites, comments, setComments}) => {
             <div className="pokemon-profile">
                 
   {Object.values(pokemon?.sprites || {}).filter(Boolean).length > 0 ? 
-  <img  src={`${Object.values(pokemon?.sprites || {}).filter(Boolean)[0]}`}/> : 
-  <img  src={defaultImg} />}
+  <img alt="Pokemon Image" src={`${Object.values(pokemon?.sprites || {}).filter(Boolean)[0]}`}/> : 
+  <img alt="Pokemon Default" src={defaultImg} />}
   <div className='profile-info' style={{width:'50%'}}>
     <div className="info">
         <div>
@@ -73,8 +73,8 @@ const PokemonPage = ({favorites, setFavorites, comments, setComments}) => {
                 <span>{stat.stat.name}</span> : <span>{stat.base_stat}</span>
             </li>
         ))}</div>
-        <div><b>Moves:</b> {pokemon?.moves?.slice(0,3).map((move) => (
-            <li>{move.move.name}</li>
+        <div><b>Moves:</b> {pokemon?.moves?.slice(0,3).map((move, index) => (
+            <p key={index}>{move.move.name}</p>
         ))}
 
         </div>

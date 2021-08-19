@@ -19,6 +19,7 @@ const PokemonList = ({favorites, setFavorites}) => {
 
     function addFavorite(pokemon){
         setFavorites(favorites => [...favorites, pokemon]);
+        
 
     }
 
@@ -63,8 +64,8 @@ const PokemonList = ({favorites, setFavorites}) => {
     return (
         <div>
            <div className="tabs">
-               <div className={` tab ${tab == 'All' ? 'tab-pressed' : 'tab'}`} onClick={() => setTab('All')}>All</div>
-               <div className={` tab ${tab == 'Favorites' ? 'tab-pressed' : 'tab'}`} onClick={() => setTab('Favorites')}>Favorites</div>
+               <div className={` tab ${tab === 'All' ? 'tab-pressed' : 'tab'}`} onClick={() => setTab('All')}>All</div>
+               <div className={` tab ${tab === 'Favorites' ? 'tab-pressed' : 'tab'}`} onClick={() => setTab('Favorites')}>Favorites</div>
              </div> 
 
             <div>
