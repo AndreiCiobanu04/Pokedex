@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { retrievePokemons } from '../services/PokemonService';
 import { useHistory } from 'react-router';
-
-const PokemonList = () => {
+import './PokemonList.css';
+const PokemonList = ({favorites, setFavorites}) => {
 
     const [pokemons, setPokemons] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
-    const [favorites, setFavorites] = useState([]);
     const [tab, setTab] = useState('All');
     const history = useHistory();
 
@@ -27,8 +26,11 @@ const PokemonList = () => {
         setFavorites(favorites => favorites.filter((item) => item.name !== pokemon.name))
 
     }
-    function goToSpecificPokemon(name){
-        history.push(`/${name}`)
+    function goToSpecificPokemon(pokemon){
+        history.push({
+            pathname: `/${pokemon.name}`,
+            state: {url: pokemon.url}
+        })
     }
 
 
@@ -40,15 +42,15 @@ const PokemonList = () => {
                    <thead>
                        <tr>
                            <th>Nume</th>
-                           <th>Adauga/Sterge Favorit</th>
+                           <th>Favorit</th>
                        </tr>
                    </thead>
                    <tbody>
                     {pokemons.map((pokemon, index) => (
                         <tr key={index}>
-                            <td>  <span style={{cursor: "pointer"}} onClick={() => goToSpecificPokemon(pokemon.name)} >{pokemon.name} </span></td>
-                            <td>{favorites.find((elem) => elem.name === pokemon.name) ? <button onClick={() => removeFavorite(pokemon)}>Sterge Favorit</button> : 
-                            <button onClick={() => addFavorite(pokemon)}>Adauga Favorit</button>}</td>
+                            <td>  <span className="pokemon" onClick={() => goToSpecificPokemon(pokemon)} >{pokemon.name.toUpperCase()} </span></td>
+                            <td>{favorites.find((elem) => elem.name === pokemon.name) ? <button className="btn btn-danger" onClick={() => removeFavorite(pokemon)}>Sterge Favorit</button> : 
+                            <button className="btn btn-success" onClick={() => addFavorite(pokemon)}>Adauga Favorit</button>}</td>
                         </tr>
                     ))}
                    </tbody>
@@ -60,18 +62,18 @@ const PokemonList = () => {
 
     return (
         <div>
-           <div>
-               <button onClick={() => setTab('All')}>All</button>
-               <button onClick={() => setTab('Favorites')}>Favorites</button>
+           <div className="tabs">
+               <div className={` tab ${tab == 'All' ? 'tab-pressed' : 'tab'}`} onClick={() => setTab('All')}>All</div>
+               <div className={` tab ${tab == 'Favorites' ? 'tab-pressed' : 'tab'}`} onClick={() => setTab('Favorites')}>Favorites</div>
              </div> 
 
             <div>
                 {tab === 'All' ? displayTable(pokemons) : displayTable(favorites)}
             </div>
 
-               { tab !== 'Favorites' && <div style={{margin: "0 auto", display:"flex"}}>
-                   <button disabled = {pageNumber === 1} onClick={() => setPageNumber(pageNumber - 1)}>Previous</button>
-                   <button onClick={() => setPageNumber(pageNumber + 1)}>Next</button>
+               { tab !== 'Favorites' && <div className="nextPrevious">
+                   <button className="btn btn-info" disabled = {pageNumber === 1} onClick={() => setPageNumber(pageNumber - 1)}>Previous</button>
+                   <button className="btn btn-info" onClick={() => setPageNumber(pageNumber + 1)}>Next</button>
             
 
                </div>}

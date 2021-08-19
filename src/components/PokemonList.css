@@ -1,0 +1,50 @@
+.tabs{
+    display: flex;
+    justify-content: center;
+    height: 100px;
+}
+
+.tab{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border: 2px solid grey;
+    font-family: 'Times New Roman', Times, serif;
+    font-size:x-large;
+}
+.tab:hover{
+    cursor: pointer;
+    background-color: darkgray;
+}
+
+.tab-pressed {
+    background-color: darkgray;
+}
+
+th {
+    width: 50%;
+    font-style: italic;
+    font-size: x-large;
+}
+
+td {
+    font-size: medium;
+    font-style: oblique;
+    
+}
+
+.pokemon{
+    cursor: pointer;
+}
+.pokemon:hover {
+    text-decoration: underline;
+}
+
+.nextPrevious {
+    display: flex;
+    justify-content: center;
+    
+}
+
