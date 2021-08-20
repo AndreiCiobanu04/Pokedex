@@ -8,6 +8,7 @@ function App() {
 
   const [favorites, setFavorites] = useState(null);
   const [comments, setComments] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
 
 
   useEffect(() => {
@@ -34,7 +35,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path = "/">
-          <PokemonList favorites={favorites} setFavorites={setFavorites}/>
+          <PokemonList favorites={favorites} setFavorites={setFavorites} pageNumber={pageNumber} setPageNumber={setPageNumber}/>
         </Route>
 
         <Route path="/:pokemonName">

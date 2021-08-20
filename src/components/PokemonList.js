@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { retrievePokemons } from '../services/PokemonService';
 import { useHistory } from 'react-router';
 import './PokemonList.css';
-const PokemonList = ({favorites, setFavorites}) => {
+const PokemonList = ({favorites, setFavorites, pageNumber, setPageNumber}) => {
 
     const [pokemons, setPokemons] = useState([]);
-    const [pageNumber, setPageNumber] = useState(1);
     const [tab, setTab] = useState('All');
     const history = useHistory();
 
@@ -42,16 +41,16 @@ const PokemonList = ({favorites, setFavorites}) => {
                <table className="table">
                    <thead>
                        <tr>
-                           <th>Nume</th>
-                           <th>Favorit</th>
+                           <th>Name</th>
+                           <th>Favorite</th>
                        </tr>
                    </thead>
                    <tbody>
                     {pokemons.map((pokemon, index) => (
                         <tr key={index}>
                             <td>  <span className="pokemon" onClick={() => goToSpecificPokemon(pokemon)} >{pokemon.name.toUpperCase()} </span></td>
-                            <td>{favorites.find((elem) => elem.name === pokemon.name) ? <button className="btn btn-danger" onClick={() => removeFavorite(pokemon)}>Sterge Favorit</button> : 
-                            <button className="btn btn-success" onClick={() => addFavorite(pokemon)}>Adauga Favorit</button>}</td>
+                            <td>{favorites.find((elem) => elem.name === pokemon.name) ? <button className="btn btn-danger" onClick={() => removeFavorite(pokemon)}>Remove</button> : 
+                            <button className="btn btn-success" onClick={() => addFavorite(pokemon)}>Add</button>}</td>
                         </tr>
                     ))}
                    </tbody>
