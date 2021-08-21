@@ -2,18 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { retrievePokemons } from '../services/PokemonService';
 import { useHistory } from 'react-router';
 import './PokemonList.css';
+import useSwr from 'swr';
+import { Viewport } from 'react-is-in-viewport';
+
+
+
+
 const PokemonList = ({favorites, setFavorites, pageNumber, setPageNumber}) => {
 
     const [pokemons, setPokemons] = useState([]);
     const [tab, setTab] = useState('All');
     const history = useHistory();
 
+    const {data, error} = useSwr(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${pageNumber*20}`)
 
+    
     useEffect(() => {
-        retrievePokemons(pageNumber*20).then((resp) => {
-            setPokemons(resp.data.results)
-        });
-    }, [pageNumber]);
+        // retrievePokemons(pageNumber*20).then((resp) => {
+        //     setPokemons(resp.data.results)
+        // });
+        if(data){
+        setPokemons(data.results)
+        }
+    }, [pageNumber, data]);
 
 
     function addFavorite(pokemon){
@@ -33,6 +44,12 @@ const PokemonList = ({favorites, setFavorites, pageNumber, setPageNumber}) => {
         })
     }
 
+    // function prefetchPokemon(pokemon){
+    //    console.log(pokemon)
+
+    // }
+
+
 
 
     const displayTable = (pokemons) => {
@@ -46,13 +63,17 @@ const PokemonList = ({favorites, setFavorites, pageNumber, setPageNumber}) => {
                        </tr>
                    </thead>
                    <tbody>
-                    {pokemons.map((pokemon, index) => (
+                      
+                    { pokemons?.map((pokemon, index) => (
                         <tr key={index}>
-                            <td>  <span className="pokemon" onClick={() => goToSpecificPokemon(pokemon)} >{pokemon.name.toUpperCase()} </span></td>
+                            
+                            <td>  <span className="pokemon" onClick={() => goToSpecificPokemon(pokemon)} >{pokemon.name.toUpperCase()} </span> </td>
                             <td>{favorites.find((elem) => elem.name === pokemon.name) ? <button className="btn btn-danger" onClick={() => removeFavorite(pokemon)}>Remove</button> : 
                             <button className="btn btn-success" onClick={() => addFavorite(pokemon)}>Add</button>}</td>
                         </tr>
+                        
                     ))}
+                   
                    </tbody>
                </table>
             </div>  

@@ -3,13 +3,15 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PokemonList from './components/PokemonList';
 import PokemonPage from './components/PokemonPage';
+import { SWRConfig } from 'swr';
+import axios from 'axios';
 
 function App() {
 
   const [favorites, setFavorites] = useState(null);
   const [comments, setComments] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
-
+  const fetcher = (...args) => axios.get(...args).then((resp) => resp.data);
 
   useEffect(() => {
     
@@ -32,6 +34,7 @@ function App() {
   
 
   return (
+    <SWRConfig value={{fetcher, revalidateOnFocus: false}} >
     <Router>
       <Switch>
         <Route exact path = "/">
@@ -43,6 +46,7 @@ function App() {
         </Route>
       </Switch>
     </Router>
+    </SWRConfig>
   );
 }
 

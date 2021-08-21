@@ -3,6 +3,7 @@ import { useLocation } from 'react-router';
 import { retrieveSpecficPokemon } from '../services/PokemonService';
 import defaultImg from '../images/defaultPokemon.jpg';
 import moment from 'moment'
+import useSwr from 'swr';
 import './PokemonPage.css'
 
 const PokemonPage = ({favorites, setFavorites, comments, setComments}) => {
@@ -11,12 +12,17 @@ const PokemonPage = ({favorites, setFavorites, comments, setComments}) => {
     const [pokemon, setPokemon] = useState([]);
     const location = useLocation();
     const [commentForPokemon, setCommentForPokemon] = useState({});
+    const {data, error} = useSwr(`${location.state.url}`)
+    console.log(data)
+
+    
 
 
 
     useEffect(() => {
-        retrieveSpecficPokemon(location.state.url).then((resp) => setPokemon(resp.data))
-    }, []);
+        //retrieveSpecficPokemon(location.state.url).then((resp) => setPokemon(resp.data))
+        setPokemon(data)
+    }, [data]);
 
     console.log(comments)
 
@@ -80,7 +86,7 @@ const PokemonPage = ({favorites, setFavorites, comments, setComments}) => {
         </div>
         </div>
         <div>
-        {favorites.find((elem) => elem.name === pokemon.name) ? <button className="btn btn-danger" onClick={() => setFavorites(favorites => favorites.filter((item) => item.name !== pokemon.name))}>Sterge Favorit</button> : 
+        {favorites?.find((elem) => elem.name === pokemon?.name) ? <button className="btn btn-danger" onClick={() => setFavorites(favorites => favorites.filter((item) => item.name !== pokemon?.name))}>Sterge Favorit</button> : 
                             <button className="btn btn-success" onClick={() => setFavorites(favorites => [...favorites, pokemon])}>Adauga Favorit</button>}
         </div>
         <div>Adauga un comentariu!</div>
@@ -91,7 +97,7 @@ const PokemonPage = ({favorites, setFavorites, comments, setComments}) => {
           <div> <textarea name="details" placeholder="Details" type="text" rows="3" value={commentForPokemon.details} onChange={(event) => handleChange(event)}/>
           </div>
           <div className="float-right">
-           <button className="btn btn-primary" type="submit" onClick={(event) => submitForm(event,pokemon.id)}>Post</button>
+           <button className="btn btn-primary" type="submit" onClick={(event) => submitForm(event,pokemon?.id)}>Post</button>
            </div>
        </form>
        </div>
@@ -105,10 +111,10 @@ const PokemonPage = ({favorites, setFavorites, comments, setComments}) => {
 
         <div>
             <h3>Comentarii</h3>
-       {comments[pokemon.id] && comments[pokemon.id].length > 0 ? (
+       {comments[pokemon?.id] && comments[pokemon?.id].length > 0 ? (
            <div>
-               {console.log(comments[pokemon.id].length)}
-               {comments[pokemon.id].map((com, index) => (
+               {console.log(comments[pokemon?.id].length)}
+               {comments[pokemon?.id].map((com, index) => (
                    <div className="comment" key = {index}>
                        <p>Name: {com.name}</p>
                        <p>Number of pokemon seen: {com.seen}</p>
